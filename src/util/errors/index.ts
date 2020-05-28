@@ -1,0 +1,1 @@
+export declare const E_EMPTY_INPUT = 'Empty input is not allowed';

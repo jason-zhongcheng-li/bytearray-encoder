@@ -1,0 +1,22 @@
+# Editor-specific
+/.idea
+/.vscode
+
+# Installed libs
+/node_modules
+
+# Generated
+/.nyc_output
+/coverage
+!/.crossbar/config.json
+/.crossbar
+/dist
+/reports
+.queues
+npm-debug.log
+/db_data
+
+# Misc
+.npmrc
+.DS_STORE
+*.stackdump
