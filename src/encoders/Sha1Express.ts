@@ -1,38 +1,30 @@
+import { EncoderService } from './../services/EncoderService';
 import { BaseEncoder } from './BaseEncoder';
-const btoa = require('btoa');
-const atob = require('atob');
+import StringUtil from '../util/StringUtil';
 
 export class Sha1Express {
-  private encoderA: BaseEncoder;
-  private encoderB: BaseEncoder;
+  private hexaService: EncoderService;
+  private service: EncoderService;
+  private unit: number;
 
-  constructor(bases = { baseA: 36, baseB: 35 }) {
-    this.encoderA = new BaseEncoder(bases.baseA);
-    this.encoderB = new BaseEncoder(bases.baseB);
+  constructor(base: number, unit: number) {
+    this.service = new EncoderService(new BaseEncoder(base));
+    this.hexaService = new EncoderService(new BaseEncoder(16));
+    this.unit = unit;
   }
 
-  public async decode(str: string): Promise<string[]> {
-    const val = btoa(str);
-    const target = [];
-    const len = val.length;
-    for (let i = 0; i < len; i += 8) {
-      target.push(val.slice(i, i + 8));
-    }
-
-
-    const resultA = target.map(obj => this.encoderA.decode(obj));
-
-    const resultB = resultA.map(obj => this.encoderB.encode(obj));
-
-    return resultB;
+  public decode(sha1: string): string[] {
+    const str = StringUtil.splitString(sha1, this.unit);
+    const hexaDec = str.map(val => this.hexaService.decode(val));
+    const result = hexaDec.map(val => this.service.encode(val));
+    return result;
   }
 
-  public async encode(str: string): Promise<string> {
-    const val = str.split('-');
+  public encode(str: string[]): string {
+    const hexaDec = str.map(val => this.service.decode(val));
+    const result = hexaDec.map(val => this.hexaService.encode(val));
 
-    const resultB = val.map(obj => this.encoderB.decode(obj));
-    const resultA = resultB.map(obj => this.encoderA.encode(obj));
+    return result.join('');
 
-    return atob(resultA.join(''));
   }
 }

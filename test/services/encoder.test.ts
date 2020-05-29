@@ -1,3 +1,4 @@
+import { Base28 } from './../../src/encoders/Base28';
 import { Sha1Express } from './../../src/encoders/Sha1Express';
 import bigInt = require('big-integer');
 const toBytes = require('to-byte-array');
@@ -8,19 +9,23 @@ import * as assert from 'assert';
 import { EncoderService } from './../../src/services/EncoderService';
 import { Base8 } from '../../src/encoders/Base8';
 import { Base16 } from './../../src/encoders/Base16';
-import { Base24 } from './../../src/encoders/Base24';
+import { Base14 } from './../../src/encoders/Base14';
 import { Base32 } from '../../src/encoders/Base32';
 import { Base36 } from '../../src/encoders/Base36';
 import { Base64 } from '../../src/encoders/Base64';
 import { BufferHex } from '../../src/encoders/BufferHex';
 import { BaseEncoder } from '../../src/encoders/BaseEncoder';
 import { E_EMPTY_INPUT } from '../../src/util/errors';
+import StringUtil from '../../src/util/StringUtil';
+import { Base24 } from '../../src/encoders/Base24';
 
 describe('Encoder unit tests', async () => {
 
   let base8: BaseEncoder;
-  let base24: BaseEncoder;
+  let base14: BaseEncoder;
   let base16: BaseEncoder;
+  let base24: BaseEncoder;
+  let base28: BaseEncoder;
   let base32: BaseEncoder;
   let base36: BaseEncoder;
   let base64: BaseEncoder;
@@ -32,13 +37,14 @@ describe('Encoder unit tests', async () => {
     // tslint:disable-next-line: no-invalid-this
     this.timeout(1000000000);
     base8 = new Base8();
-    base24 = new Base24();
+    base14 = new Base14();
     base16 = new Base16();
+    base24 = new Base24();
+    base28 = new Base28();
     base32 = new Base32();
     base36 = new Base36();
     base64 = new Base64();
     bufferHex = new BufferHex();
-    sha1Express = new Sha1Express();
   });
 
   it('should throw error if input is empty', () => {
@@ -131,36 +137,49 @@ describe('Encoder unit tests', async () => {
     assert.deepStrictEqual(result, expected);
   });
 
-  it('short number sha1 decoding test', async () => {
-    const code = '116311474231113516702134342400414143206126403671660545535070012425145143';
+  it('short number sha1 decoding test', () => {
+
+    sha1Express = new Sha1Express(36, 10);
+
+    const code = '837385736272637486597079848372';
     const sha1 = crypto.SHA1(code).toString();
 
-    const expected = ['r8skun7r',
-      't7hhaeih',
-      'qusf6vdf',
-      '18pxmyrqn',
-      'skbiqoxm',
-      's0g2ub80',
-      '14r444c'];
-    const result = await sha1Express.decode(sha1);
+    const expected = ['4dur4wcw', '3b6cba2b', '5ocmi7r3', '8dcvvbh9'];
 
+    const dec = sha1Express.decode(sha1);
 
-    assert.deepStrictEqual(result, expected);
+    assert.deepStrictEqual(dec, expected);
+
+    const enc = sha1Express.encode(dec);
+
+    assert.equal(enc === sha1, true);
+
   });
 
 
 
-  it.skip('long number base8 decoding test', async () => {
+  it('long number base8 decoding test', async () => {
 
+    sha1Express = new Sha1Express(36, 10);
 
-    const expected = '116311474231113516702134342400414143206126403671660545535070012425145143'
+    const code = '116311474231113516702134342400414143206126403671660545535070012425145143'
       + '3665154621070427104557201067171276700627170465777043334607301704736021762'
       + '6325467150763006577133541526554667660414027165423126701315057614760526500'
       + '0452421616177052165224543311447543654741617367042213645643631333465753306'
       + '2163564254163664432653550166600433332675642447003252221104064117622317044'
       + '717471253';
 
-    const sha1 = crypto.SHA1(expected).toString();
+    const sha1 = crypto.SHA1(code).toString();
+
+    const expected = ['a94o79nr', '6gfqrvjx', 'cu7y1kbd', '10oxamnx'];
+
+    const dec = sha1Express.decode(sha1);
+
+    assert.deepStrictEqual(dec, expected);
+
+    const enc = sha1Express.encode(dec);
+
+    assert.equal(enc === sha1, true);
 
 
   });

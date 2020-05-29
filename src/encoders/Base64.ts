@@ -1,6 +1,6 @@
 import { BaseEncoder } from './BaseEncoder';
-const btoa = require('btoa');
-const atob = require('atob');
+import btoa = require('btoa');
+import atob = require('atob');
 
 export class Base64 extends BaseEncoder {
   constructor() {

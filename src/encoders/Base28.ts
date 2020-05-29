@@ -1,7 +1,7 @@
 import { BaseEncoder } from './BaseEncoder';
 
-export class Base16 extends BaseEncoder {
+export class Base28 extends BaseEncoder {
   constructor() {
-    super(16);
+    super(28);
   }
 }
