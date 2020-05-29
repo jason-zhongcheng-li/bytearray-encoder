@@ -80,7 +80,7 @@ describe('Encoder unit tests', async () => {
     instance = new EncoderService(base16);
 
     const str = '98b2f23d';
-    const expected = [126, 86];
+    const expected = [152, 178, 242, 61];
     const result = instance.decode(str);
 
 
@@ -90,7 +90,7 @@ describe('Encoder unit tests', async () => {
   it('short number base16 encoding test', () => {
     instance = new EncoderService(base16);
 
-    const expected = 'eed9ad53';
+    const expected = '98b2f23d';
     const arr = [152, 178, 242, 61];
     const result = instance.encode(arr);
 
@@ -141,14 +141,18 @@ describe('Encoder unit tests', async () => {
 
     sha1Express = new Sha1Express(36, 10);
 
-    const code = '837385736272637486597079848372';
+    const code = '123456789';
     const sha1 = crypto.SHA1(code).toString();
 
-    const expected = ['4dur4wcw', '3b6cba2b', '5ocmi7r3', '8dcvvbh9'];
+    console.log('sha1 = ', sha1);
+
+    const expected = ['dkuxym4g', '7s7mfxsv', '5oequitf', '478vh269'];
 
     const dec = sha1Express.decode(sha1);
 
-    assert.deepStrictEqual(dec, expected);
+    console.log('dec = ', dec);
+
+    assert.deepEqual(dec, expected);
 
     const enc = sha1Express.encode(dec);
 
