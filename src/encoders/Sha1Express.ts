@@ -1,30 +1,30 @@
+import { Base36 } from './Base36';
+import { Base16 } from './Base16';
+import { Base64 } from './Base64';
 import { EncoderService } from './../services/EncoderService';
-import { BaseEncoder } from './BaseEncoder';
 import StringUtil from '../util/StringUtil';
 
 export class Sha1Express {
-  private hexaService: EncoderService;
-  private service: EncoderService;
+  private hexService: EncoderService;
+  private base36Encoder: EncoderService;
   private unit: number;
 
-  constructor(base: number, unit: number) {
-    this.service = new EncoderService(new BaseEncoder(base));
-    this.hexaService = new EncoderService(new BaseEncoder(16));
+  constructor(unit: number) {
+    this.base36Encoder = new EncoderService(new Base36());
+    this.hexService = new EncoderService(new Base16());
     this.unit = unit;
   }
 
   public decode(sha1: string): string[] {
     const str = StringUtil.splitString(sha1, this.unit);
-    const hexaDec = str.map(val => this.hexaService.decode(val));
-    const result = hexaDec.map(val => this.service.encode(val));
+    const base36 = str.map(val => this.hexService.decode(val));
+    const result = base36.map(val => this.base36Encoder.encode(val));
     return result;
   }
 
   public encode(str: string[]): string {
-    const hexaDec = str.map(val => this.service.decode(val));
-    const result = hexaDec.map(val => this.hexaService.encode(val));
-
+    const hexDec = str.map(val => this.base36Encoder.decode(val));
+    const result = hexDec.map(val => this.hexService.encode(val));
     return result.join('');
-
   }
 }

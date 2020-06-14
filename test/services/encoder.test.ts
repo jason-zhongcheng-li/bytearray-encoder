@@ -1,8 +1,4 @@
 import { Sha1Express } from './../../src/encoders/Sha1Express';
-import bigInt = require('big-integer');
-const toBytes = require('to-byte-array');
-const btoa = require('btoa');
-const atob = require('atob');
 import crypto = require('crypto-js');
 import * as assert from 'assert';
 import { EncoderService } from './../../src/services/EncoderService';
@@ -11,21 +7,16 @@ import { Base16 } from './../../src/encoders/Base16';
 import { Base32 } from '../../src/encoders/Base32';
 import { Base36 } from '../../src/encoders/Base36';
 import { Base64 } from '../../src/encoders/Base64';
-import { BufferHex } from '../../src/encoders/BufferHex';
 import { BaseEncoder } from '../../src/encoders/BaseEncoder';
 import { E_EMPTY_INPUT } from '../../src/util/errors';
 
 describe('Encoder unit tests', async () => {
 
   let base8: BaseEncoder;
-  let base14: BaseEncoder;
   let base16: BaseEncoder;
-  let base24: BaseEncoder;
-  let base28: BaseEncoder;
   let base32: BaseEncoder;
   let base36: BaseEncoder;
   let base64: BaseEncoder;
-  let bufferHex: BaseEncoder;
   let instance: EncoderService;
   let sha1Express: Sha1Express;
 
@@ -37,7 +28,6 @@ describe('Encoder unit tests', async () => {
     base32 = new Base32();
     base36 = new Base36();
     base64 = new Base64();
-    bufferHex = new BufferHex();
   });
 
   it('should throw error if input is empty', () => {
@@ -132,18 +122,14 @@ describe('Encoder unit tests', async () => {
 
   it('short number sha1 decoding test', () => {
 
-    sha1Express = new Sha1Express(36, 10);
+    sha1Express = new Sha1Express(10);
 
     const code = '123456789';
     const sha1 = crypto.SHA1(code).toString();
 
-    console.log('sha1 = ', sha1);
-
     const expected = ['dkuxym4g', '7s7mfxsv', '5oequitf', '478vh269'];
 
     const dec = sha1Express.decode(sha1);
-
-    console.log('dec = ', dec);
 
     assert.deepEqual(dec, expected);
 
@@ -157,7 +143,7 @@ describe('Encoder unit tests', async () => {
 
   it('long number base8 decoding test', async () => {
 
-    sha1Express = new Sha1Express(36, 10);
+    sha1Express = new Sha1Express(10);
 
     const code = '116311474231113516702134342400414143206126403671660545535070012425145143'
       + '3665154621070427104557201067171276700627170465777043334607301704736021762'
