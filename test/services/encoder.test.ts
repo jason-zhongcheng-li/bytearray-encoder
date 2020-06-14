@@ -1,4 +1,3 @@
-import { Base28 } from './../../src/encoders/Base28';
 import { Sha1Express } from './../../src/encoders/Sha1Express';
 import bigInt = require('big-integer');
 const toBytes = require('to-byte-array');
@@ -9,15 +8,12 @@ import * as assert from 'assert';
 import { EncoderService } from './../../src/services/EncoderService';
 import { Base8 } from '../../src/encoders/Base8';
 import { Base16 } from './../../src/encoders/Base16';
-import { Base14 } from './../../src/encoders/Base14';
 import { Base32 } from '../../src/encoders/Base32';
 import { Base36 } from '../../src/encoders/Base36';
 import { Base64 } from '../../src/encoders/Base64';
 import { BufferHex } from '../../src/encoders/BufferHex';
 import { BaseEncoder } from '../../src/encoders/BaseEncoder';
 import { E_EMPTY_INPUT } from '../../src/util/errors';
-import StringUtil from '../../src/util/StringUtil';
-import { Base24 } from '../../src/encoders/Base24';
 
 describe('Encoder unit tests', async () => {
 
@@ -37,10 +33,7 @@ describe('Encoder unit tests', async () => {
     // tslint:disable-next-line: no-invalid-this
     this.timeout(1000000000);
     base8 = new Base8();
-    base14 = new Base14();
     base16 = new Base16();
-    base24 = new Base24();
-    base28 = new Base28();
     base32 = new Base32();
     base36 = new Base36();
     base64 = new Base64();
