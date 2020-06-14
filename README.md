@@ -12,6 +12,16 @@ $ npm out
 $ npm up
 ```
 
+### How to run
+#### 1. compile typescript class
+```
+$ tsc
+```
+#### 2. run mocha unit tests
+```
+$ mocha
+```
+
 
 # Exercise
 
